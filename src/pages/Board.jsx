@@ -5,7 +5,6 @@ import React, { memo } from "react";
 const BoardContainer = styled(Box)({
     width: "100%",
     padding: "10px",
-    backgroundColor: "green",
 });
 
 
@@ -32,7 +31,7 @@ const Board = memo(() => {
 
             Cillum ad ipsum consectetur culpa nostrud tempor magna ullamco duis magna ex nulla. Deserunt Lorem occaecat id proident ea incididunt ut exercitation laboris elit reprehenderit voluptate sunt. Dolore non eiusmod irure nisi sit irure ex. Esse non veniam ipsum commodo mollit ut laborum velit quis magna aute. Officia consequat deserunt et est anim do do sint elit.
         </BoardContainer>
-    )
+    );
 });
 
 export default Board;

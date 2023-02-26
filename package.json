@@ -14,13 +14,17 @@
     "fs": "^0.0.1-security",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-markdown": "^8.0.5",
     "react-scripts": "5.0.1",
+    "react-syntax-highlighter": "^15.5.0",
+    "rehype-mathjax": "^4.0.2",
+    "remark-gfm": "^3.0.1",
+    "remark-math": "^5.1.1",
     "web-vitals": "^2.1.0"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "eject": "react-scripts eject",
+    "web-start": "react-scripts start",
+    "web-build": "react-scripts build",
     "dev-serve": "npm-run-all -p build serve",
     "serve": "nodemon --ignore ./build --exec babel-node src/server.js"
   },

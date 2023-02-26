@@ -1,26 +1,166 @@
+import { useTheme } from "@emotion/react";
 import styled from "@emotion/styled";
-import { Box } from "@mui/material";
-import React, { memo } from "react";
+import { Box, Button, Divider, List, ListItem, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, useMediaQuery } from "@mui/material";
+import React, { memo, useEffect, useState } from "react";
+import ReactMarkdown from 'react-markdown';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import remarkGfm from 'remark-gfm';
+import remarkMath from 'remark-math';
+import rehypeMathjax from 'rehype-mathjax';
 
-const InfoContainer = styled(Box)({
-    width: "100%",
-    backgroundColor: "red",
+import { Anchor } from "./Utils";
+
+let globalHrCount = 0;
+
+const InfoContainer = styled(Paper)(() => {
+    const { spacing } = useTheme();
+    return {
+        width: "100%",
+        margin: spacing(2),
+        padding: spacing(2),
+    };
 });
 
-const Info = memo(() => {
+// const oneColumnSizeMapper = { h1: "h2", h2: "h3", h3: "h4", h4: "h5", h5: "h6", h6: "h6" };
+// const twoColumnSizeMapper = { h1: "h3", h2: "h4", h3: "h5", h4: "h6", h5: "h6", h6: "h6" };
+const headerSizeMapper = { h1: "h3", h2: "h4", h3: "h5", h4: "h6", h5: "h6", h6: "h6" };
+
+const headerRendererFn = (variant) => ({ children }) => {
+    const { spacing } = useTheme();
+
+    let preHr = "";
+    if (variant <= "h2") {
+        globalHrCount += 1;
+        if (globalHrCount > 1) preHr = <Divider style={{ margin: spacing(2) }} variant="fullWidth" />;
+    }
+
     return (
-        <InfoContainer>
-            Mollit nulla exercitation in aliquip do esse quis dolore exercitation minim. Exercitation aute nulla veniam labore dolore. Officia velit sit pariatur ex amet Lorem laboris Lorem dolor tempor consectetur laborum Lorem occaecat.
+        <>
+            {preHr}
+            <Typography fontWeight="bold" variant={headerSizeMapper[variant]}>{children}</Typography>
+        </>
+    );
+};
 
-            Eu do velit anim aute occaecat aute id aliquip do eiusmod minim laborum esse. Magna laboris pariatur incididunt mollit et excepteur consequat consequat ea officia elit. Dolor cupidatat Lorem cillum sit cupidatat ipsum irure consequat laborum amet culpa aute esse esse. Commodo eu aliquip occaecat aute amet irure do excepteur et. Sint eu est labore occaecat culpa adipisicing dolore. Voluptate et aliqua cillum excepteur esse.
+const olRenderer = ({ children }) => (<List >{children}</List>);
+const ulRenderer = ({ children }) => (<List>{children}</List>);
+const liRenderer = ({ children, ordered, index }) => {
+    if (ordered)
+        return (
+            <ListItem disablePadding>
+                <Typography>{index + 1}. {children}
+                </Typography>
+            </ListItem>
+        );
+    else {
+        return (
+            <ListItem disablePadding>
+                <Typography>
+                    {children}
+                </Typography>
+            </ListItem>
+        );
+    }
+};
+const imgRenderer = ({ src, alt }) => {
+    return <img src={src} alt={alt} style={{ maxWidth: "100%" }} />;
+};
 
-            Commodo est ad minim Lorem laboris tempor est cupidatat ut ea reprehenderit. Proident ullamco pariatur sit fugiat. Cupidatat laboris duis consectetur duis ipsum commodo quis tempor adipisicing. Laborum voluptate ex pariatur est mollit non ut consequat aliqua eu enim.
+const paragraphRenderer = ({ children }) => (<Typography component="span" display="block">{children}</Typography>);
 
-            Ad adipisicing duis mollit magna pariatur do dolore eu amet sunt do et. Velit enim nostrud laboris aliqua veniam elit laboris magna exercitation esse velit do minim quis. Consectetur dolore sit excepteur proident eiusmod excepteur non aliqua deserunt magna non sit mollit. Id deserunt est nulla consectetur laborum. Cillum aliquip magna incididunt elit duis excepteur occaecat eu duis. Laboris in amet culpa eiusmod cillum in deserunt commodo anim. Pariatur exercitation est qui non est cillum exercitation nostrud.
+const aRenderer = ({ children, href }) => {
+    const textString = children[0];
+    const BUTTON_PREFIX = "button:";
 
-            Minim amet deserunt sint veniam ut aliquip reprehenderit do. Anim consectetur sunt minim eu labore sint ad. Nostrud ut veniam eiusmod laborum cupidatat quis culpa pariatur consectetur consequat. Irure amet magna exercitation ipsum.
+    if (textString.startsWith(BUTTON_PREFIX)) {
+        const text = textString.slice(BUTTON_PREFIX.length);
+        return (
+            <Box display="flex" direction="row" justifyContent="center" alignItems="center">
+                <Button
+                    color="primary" variant="contained"
+                    href={href}
+                    target='_blank' rel='noopener noreferrer'
+                    style={{ minWidth: "75%", margin: "20px" }}>
+                    {text}
+                </Button>
+            </Box >
+        );
+    }
+
+    else {
+        return <Anchor to={href}>{children}</Anchor>;
+    }
+};
+
+const StyledCode = styled("code")(() => {
+    const { spacing } = useTheme();
+    return {
+        border: "1px solid #999",
+        margin: `0 ${spacing(0.5)}`,
+        padding: `2px ${spacing(1)}`,
+        borderRadius: "2px",
+        backgroundColor: 'rgba(255,229,100,.2)',
+    };
+});
+
+const codeRenderer = ({ inline, children, className }) => {
+    const match = /language-(\w+)/.exec(className || '');
+
+    if (inline) {
+        return <StyledCode>{children}</StyledCode>;
+    }
+    else {
+        return <SyntaxHighlighter children={String(children).replace(/\n$/, '')} language={match[1]} customStyle={{ fontSize: "0.75em" }} />;
+    }
+};
+
+const TableCellNoWrap = styled(TableCell)({ whiteSpace: "nowrap" });
+const tableRenderer = ({ children }) => <TableContainer component={Paper}><Table size="small">{children}</Table></TableContainer>;
+const tableHeadRenderer = ({ children }) => <TableHead>{children}</TableHead>;
+const tableBodyRenderer = ({ children }) => <TableBody>{children}</TableBody>;
+const tableRowRenderer = ({ children }) => <TableRow>{children}</TableRow>;
+const tableCellRenderer = ({ children }) => <TableCellNoWrap>{children}</TableCellNoWrap>;
+const tableHeaderCellRenderer = ({ children }) => <TableCellNoWrap>{children}</TableCellNoWrap>;
+
+const mathRenderer = (data) => {
+    console.log(data);
+    return <>math</>;
+};
+
+const Info = memo(({ detail }) => {
+    let [md, setMd] = useState("");
+
+    useEffect(
+        () => {
+            fetch(detail)
+                .then((res) => res.text())
+                .then((md) => setMd(md));
+        },
+    );
+
+    return (
+        <InfoContainer elevation={1}>
+            <ReactMarkdown
+                children={md}
+                components={{
+                    ...Object.fromEntries(["h1", "h2", "h3", "h4", "h5", "h6"].map(x => [x, headerRendererFn(x)])),
+                    p: paragraphRenderer,
+                    li: liRenderer, ul: ulRenderer, ol: olRenderer,
+                    a: aRenderer,
+                    img: imgRenderer,
+                    code: codeRenderer,
+                    table: tableRenderer,
+                    thead: tableHeadRenderer,
+                    tbody: tableBodyRenderer,
+                    tr: tableRowRenderer,
+                    td: tableCellRenderer,
+                    th: tableHeaderCellRenderer,
+                }}
+                remarkPlugins={[remarkGfm, remarkMath]}
+                rehypePlugins={[rehypeMathjax]}
+            />
         </InfoContainer>
-    )
+    );
 });
 
 export default Info;
