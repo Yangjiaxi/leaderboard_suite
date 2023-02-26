@@ -13,7 +13,7 @@ import { readFile } from "fs/promises";
 import headerConfig from "./templates/header";
 import theme from "./templates/theme";
 // import infoMd from "./templates/info.md";
-import { Paper } from "@mui/material";
+import { CssBaseline } from "@mui/material";
 import App from "./pages/App";
 
 const createEmotionCache = () => createCache({ key: 'css' });
@@ -34,9 +34,9 @@ const renderFull = (title, html, css) => `
   `;
 
 const handleRender = async (req, res) => {
+    console.log("request");
     const { pageName, ...rest } = headerConfig;
-    const data = await readFile("./src/templates/info.md");
-    // console.log(data);
+    const detail = await readFile("./src/templates/info.md", "utf-8");
 
     const cache = createEmotionCache();
     const { extractCriticalToChunks, constructStyleTagsFromChunks } =
@@ -45,7 +45,8 @@ const handleRender = async (req, res) => {
     const html = ReactDOMServer.renderToString(
         <CacheProvider value={cache}>
             <ThemeProvider theme={theme}>
-                <App />
+                <CssBaseline />
+                <App header={rest} detail={detail} schema={null} data={null} />
             </ThemeProvider>
         </CacheProvider>,
     );

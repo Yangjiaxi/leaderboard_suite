@@ -7,7 +7,6 @@ const BoardContainer = styled(Box)({
     padding: "10px",
 });
 
-
 const Board = memo(() => {
     return (
         <BoardContainer>

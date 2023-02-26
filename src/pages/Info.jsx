@@ -4,16 +4,12 @@ import { Box, Button, Divider, List, ListItem, Paper, Table, TableBody, TableCel
 import React, { memo } from "react";
 import ReactMarkdown from 'react-markdown';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import remarkMath from 'remark-math';
 import remarkGfm from 'remark-gfm';
-import rehypeMathjax from 'rehype-mathjax';
-import "./markdown.css";
+// import rehypeMathjax from 'rehype-mathjax';
+import remarkMath from 'remark-math';
+// import rehypeKatex from "rehype-katex";
 
 import { Anchor } from "./Utils";
-
-// const rehypeMathjax = require("rehype-mathjax");
-// const remarkMath = require('remark-math');
-// const remarkGfm = require("remark-gfm");
 
 let globalHrCount = 0;
 
@@ -149,7 +145,7 @@ const Info = memo(({ detail }) => {
                 }}
                 className="markdown-container"
                 remarkPlugins={[remarkGfm, remarkMath]}
-                rehypePlugins={[rehypeMathjax]}
+            // rehypePlugins={[rehypeMathjax]}
             />
         </InfoContainer>
     );

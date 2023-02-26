@@ -19,6 +19,7 @@ const BackgroundBox = styled(Box)(() => {
 const MainFrame = memo(({ header, detail, schema, data }) => {
     // header={header} detail={detail} schema={schema} data={data} 
     const { title, titleCaption } = header;
+    // console.log(detail);
     return (
         <BackgroundBox>
             <Header title={title} titleCaption={titleCaption} />
