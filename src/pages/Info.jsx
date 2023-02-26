@@ -1,14 +1,19 @@
 import { useTheme } from "@emotion/react";
 import styled from "@emotion/styled";
-import { Box, Button, Divider, List, ListItem, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, useMediaQuery } from "@mui/material";
-import React, { memo, useEffect, useState } from "react";
+import { Box, Button, Divider, List, ListItem, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
+import React, { memo } from "react";
 import ReactMarkdown from 'react-markdown';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math';
+import remarkGfm from 'remark-gfm';
 import rehypeMathjax from 'rehype-mathjax';
+import "./markdown.css";
 
 import { Anchor } from "./Utils";
+
+// const rehypeMathjax = require("rehype-mathjax");
+// const remarkMath = require('remark-math');
+// const remarkGfm = require("remark-gfm");
 
 let globalHrCount = 0;
 
@@ -122,26 +127,12 @@ const tableRowRenderer = ({ children }) => <TableRow>{children}</TableRow>;
 const tableCellRenderer = ({ children }) => <TableCellNoWrap>{children}</TableCellNoWrap>;
 const tableHeaderCellRenderer = ({ children }) => <TableCellNoWrap>{children}</TableCellNoWrap>;
 
-const mathRenderer = (data) => {
-    console.log(data);
-    return <>math</>;
-};
 
 const Info = memo(({ detail }) => {
-    let [md, setMd] = useState("");
-
-    useEffect(
-        () => {
-            fetch(detail)
-                .then((res) => res.text())
-                .then((md) => setMd(md));
-        },
-    );
-
     return (
         <InfoContainer elevation={1}>
             <ReactMarkdown
-                children={md}
+                children={detail}
                 components={{
                     ...Object.fromEntries(["h1", "h2", "h3", "h4", "h5", "h6"].map(x => [x, headerRendererFn(x)])),
                     p: paragraphRenderer,
@@ -156,6 +147,7 @@ const Info = memo(({ detail }) => {
                     td: tableCellRenderer,
                     th: tableHeaderCellRenderer,
                 }}
+                className="markdown-container"
                 remarkPlugins={[remarkGfm, remarkMath]}
                 rehypePlugins={[rehypeMathjax]}
             />

@@ -3,6 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@babel/core": "latest",
+    "@babel/node": "latest",
+    "@babel/plugin-proposal-class-properties": "latest",
+    "@babel/preset-env": "latest",
+    "@babel/preset-react": "latest",
     "@emotion/cache": "latest",
     "@emotion/react": "latest",
     "@emotion/server": "latest",
@@ -14,7 +19,7 @@
     "fs": "^0.0.1-security",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-markdown": "^8.0.5",
+    "react-markdown": "^6.0.0",
     "react-scripts": "5.0.1",
     "react-syntax-highlighter": "^15.5.0",
     "rehype-mathjax": "^4.0.2",
@@ -24,9 +29,9 @@
   },
   "scripts": {
     "web-start": "react-scripts start",
-    "web-build": "react-scripts build",
-    "dev-serve": "npm-run-all -p build serve",
-    "serve": "nodemon --ignore ./build --exec babel-node src/server.js"
+    "build": "react-scripts build",
+    "serve": "nodemon --ignore ./build --exec babel-node src/server.js",
+    "dev-serve": "npm-run-all -p build serve"
   },
   "eslintConfig": {
     "extends": [
@@ -46,11 +51,6 @@
     ]
   },
   "devDependencies": {
-    "@babel/core": "latest",
-    "@babel/node": "latest",
-    "@babel/plugin-proposal-class-properties": "latest",
-    "@babel/preset-env": "latest",
-    "@babel/preset-react": "latest",
     "nodemon": "^2.0.20",
     "npm-run-all": "^4.1.5"
   }

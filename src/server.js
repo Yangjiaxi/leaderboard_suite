@@ -3,11 +3,20 @@ import * as React from 'react';
 import * as ReactDOMServer from 'react-dom/server';
 import { ThemeProvider } from '@mui/material/styles';
 import { CacheProvider } from '@emotion/react';
+import createCache from '@emotion/cache';
 import createEmotionServer from '@emotion/server/create-instance';
 
+// import App from "./pages/App";
+
+import { readFile } from "fs/promises";
+
+import headerConfig from "./templates/header";
 import theme from "./templates/theme";
+// import infoMd from "./templates/info.md";
+import { Paper } from "@mui/material";
 import App from "./pages/App";
-import createEmotionCache from "./server/cache";
+
+const createEmotionCache = () => createCache({ key: 'css' });
 
 const renderFull = (title, html, css) => `
     <!DOCTYPE html>
@@ -24,7 +33,11 @@ const renderFull = (title, html, css) => `
     </html>
   `;
 
-const handleRender = (req, res) => {
+const handleRender = async (req, res) => {
+    const { pageName, ...rest } = headerConfig;
+    const data = await readFile("./src/templates/info.md");
+    // console.log(data);
+
     const cache = createEmotionCache();
     const { extractCriticalToChunks, constructStyleTagsFromChunks } =
         createEmotionServer(cache);
@@ -40,7 +53,7 @@ const handleRender = (req, res) => {
     const emotionChunks = extractCriticalToChunks(html);
     const emotionCss = constructStyleTagsFromChunks(emotionChunks);
 
-    res.send(renderFull(html, emotionCss));
+    res.send(renderFull("hello", html, emotionCss));
 };
 
 const app = express();
