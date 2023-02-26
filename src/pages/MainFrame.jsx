@@ -6,14 +6,14 @@ import Info from "./Info";
 import Header from "./Header";
 import Board from "./Board";
 
-const MainFrame = memo(() => {
+const MainFrame = memo(({ time }) => {
     return (
         <div style={{ backgroundColor: "#fafafa" }}>
             <Header />
             <Container maxWidth="lg" sx={{ flexGrow: 1 }}>
                 <Grid container spacing={2}>
                     <Grid xs={12} md={4}>
-                        <Info />
+                        <Info />{time}
                     </Grid>
                     <Grid xs={12} md={8}>
                         <Board />
