@@ -2,13 +2,14 @@ import { useTheme } from "@emotion/react";
 import styled from "@emotion/styled";
 import { Box, Typography } from "@mui/material";
 import React, { memo } from "react";
+import { pageConfig } from "./Utils";
 
 const HeaderContainer = styled(Box)(() => {
-    const { palette: { primary: { main } } } = useTheme();
+    const { palette: { primary: { main } }, spacing } = useTheme();
     return {
         width: "100%",
-        height: "200px",
-        padding: "20px 0",
+        height: pageConfig.headerHeight,
+        marginBottom: spacing(2),
         backgroundColor: main
     };
 });

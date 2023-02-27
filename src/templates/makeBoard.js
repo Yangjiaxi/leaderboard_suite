@@ -3,7 +3,8 @@ class TableConstructor {
         this.header = [];
         this._cur_line = [];
 
-        this.content_schema = [];
+        this.contentSchema = [];
+        this.sortKey = "";
     }
 
     newline() {
@@ -34,8 +35,11 @@ class TableConstructor {
     }
 
     result(key) {
-        this.content_schema.push(key);
+        this.contentSchema.push(key);
         return this;
+    }
+    sortBy(key) {
+        this.sortKey = key;
     }
 }
 

@@ -53,7 +53,6 @@ const handleRender = async (req, res) => {
 
   res.send(renderFull(pageName, html, emotionCss));
   console.log(`   send [${new Date().getTime()}] <- `);
-
 };
 
 const app = express();
