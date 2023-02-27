@@ -10,25 +10,20 @@ import { useTheme } from "@emotion/react";
 
 const BackgroundBox = styled(Box)(() => {
     const { palette: { backgroundColor } } = useTheme();
-    return {
-        backgroundColor: backgroundColor
-    };
-
+    return { backgroundColor: backgroundColor };
 });
 
 const MainFrame = memo(({ header, detail, schema, data }) => {
-    // header={header} detail={detail} schema={schema} data={data} 
     const { title, titleCaption } = header;
-    // console.log(detail);
     return (
         <BackgroundBox>
             <Header title={title} titleCaption={titleCaption} />
             <Container maxWidth="xl" sx={{ flexGrow: 1 }}>
-                <Grid container spacing={2}>
-                    <Grid xs={12} md={4}>
+                <Grid container spacing={1}>
+                    <Grid xs={12} md={4} container item>
                         <Info detail={detail} />
                     </Grid>
-                    <Grid xs={12} md={8}>
+                    <Grid xs={12} md={8} container item>
                         <Board schema={schema} data={data} />
                     </Grid>
                 </Grid>

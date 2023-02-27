@@ -1,7 +1,7 @@
 import { useTheme } from "@emotion/react";
 import styled from "@emotion/styled";
 import { Box, Button, Divider, List, ListItem, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
-import React, { memo } from "react";
+import React, { memo, useEffect, useState } from "react";
 import ReactMarkdown from 'react-markdown';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import remarkGfm from 'remark-gfm';
@@ -102,10 +102,18 @@ const tableHeaderCellRenderer = ({ children }) => <TableCellNoWrap>{children}</T
 
 
 const Info = memo(({ detail }) => {
+
+    const [c, setC] = useState("");
+
+    useEffect(() => {
+        fetch(detail).then(x => x.data).then(x => setC(x));
+    }, [detail]);
+
+
     return (
         <InfoContainer elevation={1}>
             <ReactMarkdown
-                children={detail}
+                children={c}
                 components={{
                     ...Object.fromEntries(["h1", "h2", "h3", "h4", "h5", "h6"].map(x => [x, headerRendererFn(x)])),
                     p: paragraphRenderer,

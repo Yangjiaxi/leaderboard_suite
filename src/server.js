@@ -2,19 +2,16 @@ import express from "express";
 import * as React from 'react';
 import * as ReactDOMServer from 'react-dom/server';
 import { ThemeProvider } from '@mui/material/styles';
+import { CssBaseline } from "@mui/material";
 import { CacheProvider } from '@emotion/react';
 import createCache from '@emotion/cache';
 import createEmotionServer from '@emotion/server/create-instance';
-
-// import App from "./pages/App";
-
 import { readFile } from "fs/promises";
 
-import headerConfig from "./templates/header";
-import theme from "./templates/theme";
-// import infoMd from "./templates/info.md";
-import { CssBaseline } from "@mui/material";
 import App from "./pages/App";
+import theme from "./templates/theme";
+import headerConfig from "./templates/header";
+
 
 const createEmotionCache = () => createCache({ key: 'css' });
 
@@ -34,27 +31,29 @@ const renderFull = (title, html, css) => `
   `;
 
 const handleRender = async (req, res) => {
-    console.log("request");
-    const { pageName, ...rest } = headerConfig;
-    const detail = await readFile("./src/templates/info.md", "utf-8");
+  console.log(`request [${new Date().getTime()}] -> `);
+  const { pageName, ...rest } = headerConfig;
+  const detail = await readFile("./src/templates/info.md", "utf-8");
 
-    const cache = createEmotionCache();
-    const { extractCriticalToChunks, constructStyleTagsFromChunks } =
-        createEmotionServer(cache);
+  const cache = createEmotionCache();
+  const { extractCriticalToChunks, constructStyleTagsFromChunks } =
+    createEmotionServer(cache);
 
-    const html = ReactDOMServer.renderToString(
-        <CacheProvider value={cache}>
-            <ThemeProvider theme={theme}>
-                <CssBaseline />
-                <App header={rest} detail={detail} schema={null} data={null} />
-            </ThemeProvider>
-        </CacheProvider>,
-    );
+  const html = ReactDOMServer.renderToString(
+    <CacheProvider value={cache}>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <App header={rest} detail={detail} schema={null} data={null} />
+      </ThemeProvider>
+    </CacheProvider>,
+  );
 
-    const emotionChunks = extractCriticalToChunks(html);
-    const emotionCss = constructStyleTagsFromChunks(emotionChunks);
+  const emotionChunks = extractCriticalToChunks(html);
+  const emotionCss = constructStyleTagsFromChunks(emotionChunks);
 
-    res.send(renderFull("hello", html, emotionCss));
+  res.send(renderFull(pageName, html, emotionCss));
+  console.log(`   send [${new Date().getTime()}] <- `);
+
 };
 
 const app = express();
