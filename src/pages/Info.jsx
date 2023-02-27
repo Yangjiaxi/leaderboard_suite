@@ -5,9 +5,6 @@ import React, { memo } from "react";
 import ReactMarkdown from 'react-markdown';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import remarkGfm from 'remark-gfm';
-// import rehypeMathjax from 'rehype-mathjax';
-import remarkMath from 'remark-math';
-// import rehypeKatex from "rehype-katex";
 
 import { Anchor } from "./Utils";
 
@@ -45,28 +42,8 @@ const headerRendererFn = (variant) => ({ children }) => {
 
 const olRenderer = ({ children }) => (<List >{children}</List>);
 const ulRenderer = ({ children }) => (<List>{children}</List>);
-const liRenderer = ({ children, ordered, index }) => {
-    if (ordered)
-        return (
-            <ListItem disablePadding>
-                <Typography>{index + 1}. {children}
-                </Typography>
-            </ListItem>
-        );
-    else {
-        return (
-            <ListItem disablePadding>
-                <Typography>
-                    {children}
-                </Typography>
-            </ListItem>
-        );
-    }
-};
-const imgRenderer = ({ src, alt }) => {
-    return <img src={src} alt={alt} style={{ maxWidth: "100%" }} />;
-};
-
+const liRenderer = ({ children, ordered, index }) => <ListItem disablePadding><Typography>{ordered ? `${index + 1}. ${children}` : children}</Typography></ListItem>;
+const imgRenderer = ({ src, alt }) => <img src={src} alt={alt} style={{ maxWidth: "100%" }} />;
 const paragraphRenderer = ({ children }) => (<Typography component="span" display="block">{children}</Typography>);
 
 const aRenderer = ({ children, href }) => {
@@ -144,8 +121,7 @@ const Info = memo(({ detail }) => {
                     th: tableHeaderCellRenderer,
                 }}
                 className="markdown-container"
-                remarkPlugins={[remarkGfm, remarkMath]}
-            // rehypePlugins={[rehypeMathjax]}
+                remarkPlugins={[remarkGfm]}
             />
         </InfoContainer>
     );

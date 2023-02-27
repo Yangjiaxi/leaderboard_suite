@@ -51,31 +51,3 @@ This is `inline code`
   year={2019}
 }
 ```
-
-假设数据集被划分为两个任务$\Sigma = \{\mathcal{A, B}\}$，网络参数为$\theta$
-
-
-$$
-\begin{aligned}
-\because 0 & = \mathbb{E}[s|\theta] \\
-\\
-\therefore 0
-& = \frac{\partial}{\partial\theta} \mathbb{E}[s|\theta] \\
-& = \frac{\partial}{\partial\theta}\int_{\mathcal{X}} f(x|\theta) \frac{\partial\log\mathcal{L}(\theta|x)}{\partial{\theta}} \mathrm{d}x \\
-& = \int_{\mathcal{X}} \frac{\partial}{\partial\theta} \boxed{\frac{\partial\log\mathcal{L}(\theta|x)}{\partial{\theta}} f(x|\theta)}\ \mathrm{d}x \quad{\triangleright\ \textrm{use chain rule}}\\
-& = \int_{\mathcal{X}} \left\{ \frac{\partial^2\log\mathcal{L}(\theta|x)}{\partial^2\theta}f(x|\theta) + \frac{\partial f(x|\theta)}{\partial\theta} \frac{\partial\log\mathcal{L}(\theta|x)}{\partial{\theta}}\right\} \mathrm{d}x \\
-& = \underbrace{\int_{\mathcal{X}}  \frac{\partial^2\log\mathcal{L}(\theta|x)}{\partial^2\theta}f(x|\theta) \mathrm{d}x }_\mathbf{A} + \underbrace{\int_{\mathcal{X}}\frac{\partial \mathcal{L}(\theta|x)}{\partial\theta} \frac{\partial\log\mathcal{L}(\theta|x)}{\partial{\theta}} \mathrm{d}x}_{\mathbf{B}} \\
-\\
-\mathbf{A} &= \mathbb{E}\left[\left. \frac{\partial^2\log\mathcal{L}(\theta|x)}{\partial^2\theta}\right| \theta \right] \\
-\mathbf{B}
-&= \int_{\mathcal{X}} \color{red}{\frac{\partial \mathcal{L}(\theta|x)}{\partial\theta}} \frac{\partial\log\mathcal{L}(\theta|x)}{\partial{\theta}} \mathrm{d}x \\
-&= \int_{\mathcal{X}}\color{red}{\frac{\partial\log\mathcal{L}(\theta|x)}{\partial{\theta}}\mathcal{L}(\theta|x)} \frac{\partial\log\mathcal{L}(\theta|x)}{\partial{\theta}} \mathrm{d}x\\
-&= \int_{\mathcal{X}} \left(\frac{ \partial\log\mathcal{L}(\theta|x)}{\partial{\theta}} \right)^2 f(x|\theta)\mathrm{d}x \\
-&= \mathbb{E}\left[\left. \left(\frac{ \partial\log\mathcal{L}(\theta|x)}{\partial{\theta}} \right)^2 \right| \theta \right] \\
-
-\\
-
-& \because \mathbf{A}+\mathbf{B} = 0 \\
-& \therefore \mathbb{E}\left[\left. \frac{\partial^2\log\mathcal{L}(\theta|x)}{\partial^2\theta}\right| \theta \right] + \mathbb{E}\left[\left. \left(\frac{ \partial\log\mathcal{L}(\theta|x)}{\partial{\theta}} \right)^2 \right| \theta \right] = 0
-\end{aligned}
-$$

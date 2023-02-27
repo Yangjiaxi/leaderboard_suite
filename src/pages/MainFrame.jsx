@@ -23,12 +23,12 @@ const MainFrame = memo(({ header, detail, schema, data }) => {
     return (
         <BackgroundBox>
             <Header title={title} titleCaption={titleCaption} />
-            <Container maxWidth="lg" sx={{ flexGrow: 1 }}>
+            <Container maxWidth="xl" sx={{ flexGrow: 1 }}>
                 <Grid container spacing={2}>
-                    <Grid xs={12} md={5}>
+                    <Grid xs={12} md={4}>
                         <Info detail={detail} />
                     </Grid>
-                    <Grid xs={12} md={7}>
+                    <Grid xs={12} md={8}>
                         <Board schema={schema} data={data} />
                     </Grid>
                 </Grid>
