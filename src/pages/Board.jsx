@@ -37,6 +37,8 @@ const makeDataRow = (contentKeys, line, index) => {
 };
 
 const Board = memo(({ schema, data }) => {
+    console.log(data);
+    console.log(schema);
     const tableHeader = makeHeader(schema.header);
     data.sort((a, b) => b[schema.sortKey] - a[schema.sortKey]);
     const tableBody = makeData(schema.contentSchema, data);

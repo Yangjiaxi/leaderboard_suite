@@ -1,3 +1,23 @@
+class Cell {
+    constructor(keyName, opt) {
+        this.keyName = keyName;
+        this.config = {
+            type: opt.type,
+            fontFamily: opt.fontFamily,
+            ...opt
+        };
+    }
+
+    static plain(keyName) { return new Cell(keyName, { type: "plain", fontFamily: "plain" }); }
+    static bold(keyName) { return new Cell(keyName, { type: "plain", fontFamily: "bold" }); }
+    static italic(keyName) { return new Cell(keyName, { type: "plain", fontFamily: "italic" }); }
+    static badge(keyName) { return new Cell(keyName, { type: "badge", fontFamily: "plain" }); }
+    static link(keyName) { return new Cell(keyName, { type: "link", fontFamily: "plain" }); }
+
+    static make(keyName, opt) { return new Cell(keyName, opt); }
+
+}
+
 class TableConstructor {
     constructor() {
         this.header = [];
@@ -35,9 +55,15 @@ class TableConstructor {
     }
 
     result(key) {
-        this.contentSchema.push(key);
+        this.contentSchema.push([key]);
         return this;
     }
+
+    multilineResult(keys) {
+        this.contentSchema.push(keys);
+        return this;
+    }
+
     sortBy(key) {
         this.sortKey = key;
     }
@@ -54,4 +80,4 @@ class DataSchemeConfig {
 }
 
 
-export { TableConstructor, DataSchemeConfig };
+export { TableConstructor, DataSchemeConfig, Cell };
