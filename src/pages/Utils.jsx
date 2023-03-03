@@ -1,5 +1,5 @@
 import { Link } from "@mui/material";
-import { memo } from "react";
+import React, { memo } from "react";
 
 const pageConfig = {
     headerHeight: "250px",

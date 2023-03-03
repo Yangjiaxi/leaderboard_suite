@@ -16,18 +16,30 @@ class Cell {
     static mono(keyName) { return new Cell(keyName, { type: "plain", isMono: true }); }
     static badge(keyName) { return new Cell(keyName, { type: "badge" }); }
     static link(keyName) { return new Cell(keyName, { type: "link" }); }
-
     static make(keyName, opt) { return new Cell(keyName, opt); }
-
 }
 
 class TableConstructor {
     constructor() {
+        this.name = "Table";
+        this.scopeName = null;
+
         this.header = [];
         this._cur_line = [];
 
         this.contentSchema = [];
         this.sortKey = "";
+        this.indexSchema = [Cell.plain("__index")];
+    }
+
+    scope(scopeName) {
+        this.scopeName = scopeName;
+        return this;
+    }
+
+    tableName(name) {
+        this.name = name;
+        return this;
     }
 
     newline() {
@@ -55,6 +67,16 @@ class TableConstructor {
 
     v_cell(content, rowSpan) {
         return this.hv_cell({ content, colSpan: 1, rowSpan });
+    }
+
+    indexWithResult(key) {
+        this.indexSchema = [Cell.plain("__index"), key];
+        return this;
+    }
+
+    indexWithMultilineResult(keys) {
+        this.indexSchema = [Cell.plain("__index"), ...keys];
+        return this;
     }
 
     result(key) {

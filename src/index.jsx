@@ -8,7 +8,7 @@ import theme from "./templates/theme";
 
 import detail from "./templates/info.md";
 import header from "./templates/header";
-import tableSchema from "./templates/board";
+import tableSchemas from "./templates/board";
 
 // const data = [
 //     { "name": "SOTA", 'average': 1.2, 'mip-photochat-f1': 1.2, 'mip-mmdialog-f1': 1.2, 't2i-photochat-r1': 1.2, 't2i-mmdialog-r1': 1.2, 'i2t-imagechat-r1': 1.2, 'i2t-visdial-mrr': 1.2, 'mdst-simmc-intent-f1': 1.2, 'mdst-mmconv-a.c': 1.2, 'mrg-simmc-bleu': 1.2, 'mrg-mmconv-inform': 1.2 },
@@ -16,12 +16,17 @@ import tableSchema from "./templates/board";
 // ];
 
 const data = [
-    { "name": "Human Performance", "creator": "Data Engineers + DB Students", "test_acc": "Testing" },
-    { "name": "Codex + DB schema + Knowledge Concat + Value Sampling", "creator": "OpenAI", "time": "2021/09/30", "size": "175B", "params": "0", "dev_acc": "21.81", "test_acc": "TBD" },
-    { "name": "Codex + DB schema + Knowledge Concat", "creator": "OpenAI", "time": "2021/10/05", "repo": "https://www.openai.com/", "size": "175B", "params": "0", "dev_acc": "17.80", "test_acc": "TBD" },
-    { "name": "Codex + DB schema", "creator": "OpenAI", "time": "2021/10/11", "size": "175B", "params": "0", "dev_acc": "10.65", "test_acc": "TBD" },
-    { "name": "T5-3B", "creator": "Google", "time": "2020/05/22", "repo": "https://www.google.com/", "size": "3B", "params": "3B", "dev_acc": "5.45", "test_acc": "TBD" },
-    { "name": "T5-Large", "creator": "Google", "time": "2020/05/10", "repo": "https://www.baidu.com/", "size": "800M", "params": "800M", "dev_acc": "3.72", "test_acc": "TBD" }
+    { "scope": "accuracy", "name": "Human Performance", "creator": "Data Engineers + DB Students", "dev_acc": "87.6", "test_acc": "85.2", "__skip_index": true },
+    { "scope": "accuracy", "name": "B + Value Sampling", "creator": "OpenAI", "time": "2021/09/30", "size": "175B", "params": "0", "dev_acc": "21.81", "test_acc": "TBD" },
+    { "scope": "accuracy", "name": "A + Knowledge Concat (B)", "creator": "OpenAI", "time": "2021/10/05", "repo": "https://www.openai.com/", "size": "175B", "params": "0", "dev_acc": "17.80", "test_acc": "TBD" },
+    { "scope": "accuracy", "name": "Codex + DB schema (A)", "creator": "OpenAI", "time": "2021/10/11", "size": "175B", "params": "0", "dev_acc": "10.65", "test_acc": "TBD" },
+    { "scope": "accuracy", "name": "T5-3B", "creator": "Google", "time": "2020/05/22", "repo": "https://www.google.com/", "size": "3B", "params": "3B", "dev_acc": "5.45", "test_acc": "TBD" },
+    { "scope": "accuracy", "name": "T5-Large", "creator": "Google", "time": "2020/05/10", "repo": "https://www.baidu.com/", "size": "800M", "params": "800M", "dev_acc": "3.72", "test_acc": "TBD" },
+    { "scope": "efficiency", "name": "Human Performance", "creator": "Data Engineers + DB Students", "dev_acc": "87.6", "test_acc": "85.2", "__skip_index": true },
+    { "scope": "efficiency", "name": "B + Value Sampling", "creator": "OpenAI", "time": "2021/09/30", "size": "175B", "params": "0", "dev_acc": "21.81", "test_acc": "TBD" },
+    { "scope": "efficiency", "name": "A + Knowledge Concat (B)", "creator": "OpenAI", "time": "2021/10/05", "repo": "https://www.openai.com/", "size": "175B", "params": "0", "dev_acc": "17.80", "test_acc": "TBD" },
+    { "scope": "efficiency", "name": "Codex + DB schema (A)", "creator": "OpenAI", "time": "2021/10/11", "size": "175B", "params": "0", "dev_acc": "10.65", "test_acc": "TBD" },
+    { "scope": "efficiency", "name": "T5-Large", "creator": "Google", "time": "2020/05/10", "repo": "https://www.baidu.com/", "size": "800M", "params": "800M", "dev_acc": "3.72", "test_acc": "TBD" }
 ];
 
 
@@ -30,6 +35,6 @@ const root = createRoot(container);
 root.render(
     <ThemeProvider theme={theme}>
         <CssBaseline />
-        <App header={header} detail={detail} schema={tableSchema} data={data} />
+        <App header={header} detail={detail} schemas={tableSchemas} data={data} />
     </ThemeProvider>
 );

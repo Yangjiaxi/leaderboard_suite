@@ -1,0 +1,11 @@
+{
+    "scope": "accuracy",
+    "name": "T5-Large",
+    "creator": "Google",
+    "time": "2020/05/10",
+    "repo": "https://www.baidu.com/",
+    "size": "800M",
+    "params": "800M",
+    "dev_acc": "3.72",
+    "test_acc": "TBD"
+}

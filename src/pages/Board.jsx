@@ -1,12 +1,17 @@
 import styled from "@emotion/styled";
-import { Box, Chip, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
-import React, { Fragment, memo } from "react";
+import { Box, Chip, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Toolbar, Typography } from "@mui/material";
+import React, { Fragment } from "react";
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
-import { Cell } from "../templates/makeBoard";
+import { useTheme } from "@emotion/react";
 import { Anchor } from "./Utils";
 
-const BoardContainer = styled(Box)(() => {
-    return { width: "100%", };
+const BoardContainer = styled(Box)(() => ({ width: "100%" }));
+const BoardPaper = styled(Paper)(() => {
+    const { spacing } = useTheme();
+    return {
+        marginBottom: spacing(3),
+        padding: `0 ${spacing(2)}`
+    };
 });
 
 const TableCellNoWrap = styled(TableCell)({ whiteSpace: "nowrap" });
@@ -34,18 +39,20 @@ const makeData = (cellSchemas, data) => {
 };
 
 const renderFontDecorator = (text, config) => {
-    if (config.isItalic) return <i>{text}</i>;
-    if (config.isBold) return <b>{text}</b>;
-    if (config.isMono) return <tt>{text}</tt>;
-    return text;
+    let content = text;
+    if (config.isItalic) content = <i>{content}</i>;
+    if (config.isBold) content = <b>{content}</b>;
+    if (config.isMono) content = <tt>{content}</tt>;
+
+    return content;
 };
 
 const renderCellContent = (cellConfig, cellData) => {
     const textWithDecorator = renderFontDecorator(cellData, cellConfig);
     if (cellConfig.type === "plain") return <Typography>{textWithDecorator}</Typography>;
-    if (cellConfig.type === "badge") return <Chip label={textWithDecorator} variant="outlined" size="small" />;
+    if (cellConfig.type === "badge") return <Chip label={textWithDecorator} variant="filled" size="small" />;
     if (cellConfig.type === "link") return <Anchor to={cellData}><OpenInNewIcon /></Anchor>;
-    else console.log(cellConfig.type);
+    else console.log("Uncaught: ", cellConfig.type);
 };
 
 const renderDataCell = (cellSchema, fullDataDict, index) => {
@@ -68,33 +75,60 @@ const preprocessHeader = (oriHeader) => {
             maxRowSpan = Math.max(maxRowSpan, headerCell.rowSpan);
         }
     }
-    let withIndexHeader = oriHeader;
-    withIndexHeader[0].unshift({ content: 'Index', colSpan: 1, rowSpan: maxRowSpan });
-    return withIndexHeader;
+
+    const newHeader = [
+        [{ content: 'Index', colSpan: 1, rowSpan: maxRowSpan }, ...oriHeader[0]],
+        ...oriHeader.slice(1)
+    ];
+
+    return newHeader;
 };
 
-const preprocessSchema = (oriSchema) => [[Cell.plain("index")], ...oriSchema];
+const preprocessSchema = (indexSchema, contentSchema) => [indexSchema, ...contentSchema];
 
-const Board = memo(({ schema, data }) => {
+const makeBoard = (schema, data, index) => {
+    const tableName = schema.name;
     const sortKey = schema.sortKey;
+    const scopeName = schema.scopeName;
     const header = preprocessHeader(schema.header);
-    const dataSchema = preprocessSchema(schema.contentSchema);
+    const dataSchema = preprocessSchema(schema.indexSchema, schema.contentSchema);
 
     const tableHeader = makeHeader(header);
-    const sorted = [...data].sort((a, b) => b[sortKey] - a[sortKey]);
-    const dataWithIdx = sorted.map((e, index) => ({ ...e, index: index + 1 }));
+
+    const matchedData = data.filter(({ scope }) => scope === scopeName);
+    const sorted = [...matchedData].sort((a, b) => b[sortKey] - a[sortKey]);
+
+    let dataWithIdx = [];
+    let counter = 1;
+    for (const e of sorted) {
+        if (e.hasOwnProperty("__skip_index") && e.__skip_index) {
+            dataWithIdx.push(e);
+        }
+        else {
+            dataWithIdx.push({ ...e, "__index": counter });
+            counter += 1;
+        }
+    }
+
     const tableBody = makeData(dataSchema, dataWithIdx);
 
+    return <BoardPaper key={index} elevation={2}>
+        <Toolbar><Typography variant="h5" fontWeight="bold">{tableName}</Typography></Toolbar>
+        <TableContainer>
+            <Table size="small">
+                {tableHeader}
+                {tableBody}
+            </Table>
+        </TableContainer>
+    </BoardPaper>;
+};
+
+const Board = ({ schemas, data }) => {
     return (
         <BoardContainer>
-            <TableContainer component={Paper}>
-                <Table>
-                    {tableHeader}
-                    {tableBody}
-                </Table>
-            </TableContainer>
+            {schemas.map((schema, index) => makeBoard(schema, data, index))}
         </BoardContainer>
     );
-});
+};
 
 export default Board;

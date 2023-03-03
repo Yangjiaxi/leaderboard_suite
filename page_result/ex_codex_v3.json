@@ -1,0 +1,10 @@
+{
+    "scope": "accuracy",
+    "name": "Codex + DB schema (A)",
+    "creator": "OpenAI",
+    "time": "2021/10/11",
+    "size": "175B",
+    "params": "0",
+    "dev_acc": "24.42",
+    "test_acc": "21.73"
+}

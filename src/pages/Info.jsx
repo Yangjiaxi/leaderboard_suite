@@ -1,14 +1,12 @@
 import { useTheme } from "@emotion/react";
 import styled from "@emotion/styled";
-import { Box, Button, Divider, List, ListItem, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
+import { Box, Button, List, ListItem, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
 import React, { memo } from "react";
 import ReactMarkdown from 'react-markdown';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import remarkGfm from 'remark-gfm';
 
 import { Anchor } from "./Utils";
-
-let globalHrCount = 0;
 
 const InfoContainer = styled(Paper)(() => {
     const { spacing } = useTheme();
@@ -23,25 +21,12 @@ const InfoContainer = styled(Paper)(() => {
 const headerSizeMapper = { h1: "h3", h2: "h4", h3: "h5", h4: "h6", h5: "h6", h6: "h6" };
 
 const headerRendererFn = (variant) => ({ children }) => {
-    const { spacing } = useTheme();
-
-    let preHr = "";
-    if (variant <= "h2") {
-        globalHrCount += 1;
-        if (globalHrCount > 1) preHr = <Divider style={{ margin: spacing(2) }} variant="fullWidth" />;
-    }
-
-    return (
-        <>
-            {preHr}
-            <Typography fontWeight="bold" variant={headerSizeMapper[variant]}>{children}</Typography>
-        </>
-    );
+    return <Typography fontWeight="bold" variant={headerSizeMapper[variant]} marginTop="0.5em">{children}</Typography>;
 };
 
 const olRenderer = ({ children }) => (<List >{children}</List>);
 const ulRenderer = ({ children }) => (<List>{children}</List>);
-const liRenderer = ({ children, ordered, index }) => <ListItem disablePadding><Typography>{ordered ? `${index + 1}. ${children}` : children}</Typography></ListItem>;
+const liRenderer = ({ children, ordered, index }) => <ListItem disablePadding><Typography>{ordered ? `${index + 1}. ` : ""}{children}</Typography></ListItem>;
 const imgRenderer = ({ src, alt }) => <img src={src} alt={alt} style={{ maxWidth: "100%" }} />;
 const paragraphRenderer = ({ children }) => (<Typography component="span" display="block">{children}</Typography>);
 
@@ -101,8 +86,11 @@ const tableHeaderCellRenderer = ({ children }) => <TableCellNoWrap>{children}</T
 
 
 const Info = memo(({ detail }) => {
+
+    // const detail = "## Hello\n\n1. **Title**: content";
+
     return (
-        <InfoContainer elevation={1}>
+        <InfoContainer elevation={2}>
             <ReactMarkdown
                 children={detail}
                 components={{

@@ -9,6 +9,7 @@ const HeaderContainer = styled(Box)(() => {
     return {
         width: "100%",
         height: pageConfig.headerHeight,
+        padding: `0 ${spacing(2)}`,
         marginBottom: spacing(2),
         backgroundColor: main
     };

@@ -1,0 +1,10 @@
+{
+    "scope": "efficiency",
+    "name": "B + Value Sampling",
+    "creator": "OpenAI",
+    "time": "2021/09/30",
+    "size": "175B",
+    "params": "0",
+    "dev_acc": "34.00",
+    "test_acc": "34.06"
+}

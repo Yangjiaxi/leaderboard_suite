@@ -1,0 +1,11 @@
+{
+    "scope": "efficiency",
+    "name": "T5-3B",
+    "creator": "Google",
+    "time": "2020/05/22",
+    "repo": "https://www.google.com/",
+    "size": "3B",
+    "params": "3B",
+    "dev_acc": "5.45",
+    "test_acc": "TBD"
+}

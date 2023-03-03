@@ -10,12 +10,6 @@ BIRD contains over **16,000** unique question-SQL pairs, **98** big databases wi
 
 [button:Paper](https://alibabaresearch.github.io/DAMO-ConvAI/bird/)
 
-| Tables   |      Are      |  Cool |      Are      |  Cool |      Are      |  Cool |
-| -------- | :-----------: | ----: | :-----------: | ----: | :-----------: | ----: |
-| col 1 is | left-aligned  | $1600 | left-aligned  | $1600 | left-aligned  | $1600 |
-| col 2 is |   centered    |   $12 |   centered    |   $12 |   centered    |   $12 |
-| col 3 is | right-aligned |    $1 | right-aligned |    $1 | right-aligned |    $1 |
-
 ## Surprise from BIRD
 
 1. **External Knowledge**: "account.type = 'OWNER'" can be inferred by the knowledge evidence: "The condition of the loans require the account type should be the owner."

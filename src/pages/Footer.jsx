@@ -14,15 +14,10 @@ const FooterContainer = styled(Box)(() => {
     };
 });
 
-const HeaderText = styled(Typography)(() => {
-    const { palette: { primary: { main } } } = useTheme();
-    return { color: main };
-});
-
 const Footer = memo(() => {
     return (
         <FooterContainer display="flex" flexDirection="column" justifyContent="center">
-            <HeaderText align="center" fontWeight="bold">Hello World</HeaderText>
+            <Typography align="center" fontWeight="bold" color="primary">Designed with 🔥 and ❤️ by LLMind.</Typography>
         </FooterContainer>
     );
 });

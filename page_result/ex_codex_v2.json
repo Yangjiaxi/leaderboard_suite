@@ -1,0 +1,11 @@
+{
+    "scope": "accuracy",
+    "name": "A + Knowledge Concat (B)",
+    "creator": "OpenAI",
+    "time": "2021/10/05",
+    "repo": "https://www.openai.com/",
+    "size": "175B",
+    "params": "0",
+    "dev_acc": "32.18",
+    "test_acc": "33.86"
+}

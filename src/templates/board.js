@@ -1,14 +1,14 @@
 import { TableConstructor, Cell } from "./makeBoard";
 
-// import CliTable3 from "cli-table3";
-// const metricConfig = new DataSchemeConfig();
+const tableEX = new TableConstructor();
 
-const table = new TableConstructor();
-
-table
+tableEX
+    .scope("accuracy")
+    .tableName("Execution Accuracy")
     .cell("Model").cell("Code").cell("Size").cell("Tunable Params").cell("Dev (%)").cell("Test (%)")
     .header_ok()
-    .multilineResult([Cell.bold("name"), Cell.italic("creator"), Cell.badge("time")])
+    .indexWithResult(Cell.badge("time"))
+    .multilineResult([Cell.bold("name"), Cell.italic("creator")])
     .result(Cell.link("repo"))
     .result(Cell.mono("size"))
     .result(Cell.mono("params"))
@@ -16,17 +16,24 @@ table
     .result(Cell.plain("test_acc"))
     .sortBy("dev_acc");
 
-export default table;
 
-// let printTable = new CliTable3({ style: { head: [], border: [] } });
+const tableES = new TableConstructor();
 
-// for (const headerLine of table.header) {
-//     let printLine = [];
+tableES
+    .scope("efficiency")
+    .tableName("Execution Accuracy")
+    .cell("Model").cell("Code").cell("Size").cell("Tunable Params").cell("Dev (%)").cell("Test (%)")
+    .header_ok()
+    .indexWithResult(Cell.badge("time"))
+    .multilineResult([Cell.bold("name"), Cell.italic("creator")])
+    .result(Cell.link("repo"))
+    .result(Cell.mono("size"))
+    .result(Cell.mono("params"))
+    .result(Cell.plain("dev_acc"))
+    .result(Cell.plain("test_acc"))
+    .sortBy("dev_acc");
 
-//     for (const { rowSpan, colSpan, content } of headerLine) {
-//         printLine.push({ rowSpan, colSpan, content, vAlign: "center", hAlign: "center" });
-//     }
-//     printTable.push(printLine);
-// }
 
-// console.log(printTable.toString());
+const allTables = [tableEX, tableES];
+
+export default allTables;

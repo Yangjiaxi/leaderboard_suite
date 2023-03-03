@@ -6,12 +6,23 @@ import { CssBaseline } from "@mui/material";
 import { CacheProvider } from '@emotion/react';
 import createCache from '@emotion/cache';
 import createEmotionServer from '@emotion/server/create-instance';
-import { readFile } from "fs/promises";
+import { readFile, readdir } from "fs/promises";
 
 import App from "./pages/App";
 import theme from "./templates/theme";
 import headerConfig from "./templates/header";
+import tableSchemas from "./templates/board";
 
+
+const JSON_RESULT_FOLDER = "./page_result";
+const INFO_MARKDOWN = "./src/templates/info.md";
+
+
+const readJson = async () => {
+  const files = await readdir(JSON_RESULT_FOLDER);
+  const content = await Promise.all(files.map(async (file) => JSON.parse(await readFile(`${JSON_RESULT_FOLDER}/${file}`))));
+  return content;
+};
 
 const createEmotionCache = () => createCache({ key: 'css' });
 
@@ -32,7 +43,9 @@ const renderFull = (title, html, css) => `
 const handleRender = async (req, res) => {
   console.log(`request [${new Date().getTime()}] -> `);
   const { pageName, ...rest } = headerConfig;
-  const detail = await readFile("./src/templates/info.md", "utf-8");
+
+  const resultData = await readJson();
+  const detail = await readFile(INFO_MARKDOWN, "utf-8");
 
   const cache = createEmotionCache();
   const { extractCriticalToChunks, constructStyleTagsFromChunks } =
@@ -42,7 +55,7 @@ const handleRender = async (req, res) => {
     <CacheProvider value={cache}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <App header={rest} detail={detail} schema={null} data={null} />
+        <App header={rest} detail={detail} schemas={tableSchemas} data={resultData} />
       </ThemeProvider>
     </CacheProvider>,
   );

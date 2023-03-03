@@ -14,19 +14,19 @@ const BackgroundBox = styled(Box)(() => {
     return { backgroundColor: backgroundColor, minHeight: "100vh" };
 });
 
-const MainFrame = memo(({ header, detail, schema, data }) => {
+const MainFrame = memo(({ header, detail, schemas, data }) => {
     const { title, titleCaption } = header;
     return (
-        <BackgroundBox display="flex" flexDirection="column">
+        <BackgroundBox display="flex" flexDirection="column" >
             <Header title={title} titleCaption={titleCaption} />
 
-            <Container maxWidth="xl" sx={{ flex: 1 }}>
-                <Grid spacing={1} container maxWidth="xl">
-                    <Grid xs={12} md={5} lg={4} item>
+            <Container maxWidth="xl" sx={{ flex: 1, p: 1 }}>
+                <Grid spacing={2} container maxWidth="xl">
+                    <Grid xs={12} md={4} item>
                         <Info detail={detail} />
                     </Grid>
-                    <Grid xs={12} md={7} lg={8} item>
-                        <Board schema={schema} data={data} />
+                    <Grid xs={12} md={8} item>
+                        <Board schemas={schemas} data={data} />
                     </Grid>
                 </Grid>
             </Container>
