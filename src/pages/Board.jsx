@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { Box, Chip, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Toolbar, Typography } from "@mui/material";
+import { Box, Chip, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Toolbar, Typography } from "@mui/material";
 import React, { Fragment } from "react";
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import { useTheme } from "@emotion/react";
@@ -10,7 +10,7 @@ const BoardPaper = styled(Paper)(() => {
     const { spacing } = useTheme();
     return {
         marginBottom: spacing(3),
-        padding: `0 ${spacing(2)}`
+        padding: spacing(2)
     };
 });
 
@@ -51,7 +51,7 @@ const renderCellContent = (cellConfig, cellData) => {
     const textWithDecorator = renderFontDecorator(cellData, cellConfig);
     if (cellConfig.type === "plain") return <Typography>{textWithDecorator}</Typography>;
     if (cellConfig.type === "badge") return <Chip label={textWithDecorator} variant="filled" size="small" />;
-    if (cellConfig.type === "link") return <Anchor to={cellData}><OpenInNewIcon /></Anchor>;
+    if (cellConfig.type === "link") return <Anchor to={cellData}><IconButton><OpenInNewIcon /></IconButton></Anchor>;
     else console.log("Uncaught: ", cellConfig.type);
 };
 
@@ -113,8 +113,8 @@ const makeBoard = (schema, data, index) => {
     const tableBody = makeData(dataSchema, dataWithIdx);
 
     return <BoardPaper key={index} elevation={2}>
-        <Toolbar><Typography variant="h5" fontWeight="bold">{tableName}</Typography></Toolbar>
         <TableContainer>
+            <Toolbar><Typography variant="h5" fontWeight="bold" display="block" style={{ whiteSpace: "nowrap" }}>{tableName}</Typography></Toolbar>
             <Table size="small">
                 {tableHeader}
                 {tableBody}

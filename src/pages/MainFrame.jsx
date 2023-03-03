@@ -1,6 +1,6 @@
 import React, { memo } from "react";
 
-import { Box, Container } from "@mui/material";
+import { Box, Button, Container } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
 import Info from "./Info";
 import Header from "./Header";
@@ -31,6 +31,7 @@ const MainFrame = memo(({ header, detail, schemas, data }) => {
                 </Grid>
             </Container>
 
+            <Button onClick={() => console.log("hello")}>Click</Button>
             <Footer />
         </BackgroundBox>
     );

@@ -4,10 +4,11 @@ const tableEX = new TableConstructor();
 
 tableEX
     .scope("accuracy")
-    .tableName("Execution Accuracy")
+    .tableName("Leaderboard - Execution Accuracy")
     .cell("Model").cell("Code").cell("Size").cell("Tunable Params").cell("Dev (%)").cell("Test (%)")
     .header_ok()
     .indexWithResult(Cell.badge("time"))
+    // .indexWithResult(Cell.make("time", { type: "badge", isMono: true }))
     .multilineResult([Cell.bold("name"), Cell.italic("creator")])
     .result(Cell.link("repo"))
     .result(Cell.mono("size"))
@@ -16,12 +17,11 @@ tableEX
     .result(Cell.plain("test_acc"))
     .sortBy("dev_acc");
 
-
 const tableES = new TableConstructor();
 
 tableES
     .scope("efficiency")
-    .tableName("Execution Accuracy")
+    .tableName("Leaderboard - Efficiency Score")
     .cell("Model").cell("Code").cell("Size").cell("Tunable Params").cell("Dev (%)").cell("Test (%)")
     .header_ok()
     .indexWithResult(Cell.badge("time"))
