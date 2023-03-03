@@ -6,6 +6,11 @@ import ReactMarkdown from 'react-markdown';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import remarkGfm from 'remark-gfm';
 
+// const remarkMath = require("remark-math");
+// const rehypeMathjax = require("rehype-mathjax");
+// import remarkMath from 'remark-math';
+// import rehypeMathjax from "rehype-mathjax";
+
 import { Anchor } from "./Utils";
 
 const InfoContainer = styled(Paper)(() => {
@@ -88,7 +93,6 @@ const tableHeaderCellRenderer = ({ children }) => <TableCellNoWrap>{children}</T
 const Info = memo(({ detail }) => {
 
     // const detail = "## Hello\n\n1. **Title**: content";
-
     return (
         <InfoContainer elevation={2}>
             <ReactMarkdown
