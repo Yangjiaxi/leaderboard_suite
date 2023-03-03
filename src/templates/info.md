@@ -45,3 +45,7 @@ This is `inline code`
   year={2019}
 }
 ```
+
+$$
+f(x, y) = frac{1}{\sqrt{1+x^2+y^2}}
+$$

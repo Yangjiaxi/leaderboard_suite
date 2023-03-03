@@ -19,52 +19,55 @@ const INFO_MARKDOWN = "./src/templates/info.md";
 
 
 const readJson = async () => {
-  const files = await readdir(JSON_RESULT_FOLDER);
-  const content = await Promise.all(files.map(async (file) => JSON.parse(await readFile(`${JSON_RESULT_FOLDER}/${file}`))));
-  return content;
+    const files = await readdir(JSON_RESULT_FOLDER);
+    const content = await Promise.all(files.map(async (file) => JSON.parse(await readFile(`${JSON_RESULT_FOLDER}/${file}`))));
+    return content;
 };
 
 const createEmotionCache = () => createCache({ key: 'css' });
 
-const renderFull = (title, html, css) => `
+const renderFull = (title, html, css, data) => `
     <!DOCTYPE html>
     <html>
       <head>
         <title>${title}</title>
         ${css}
         <meta name="viewport" content="initial-scale=1, width=device-width" />
+        <script>window.__my_little_pony__='${Buffer.from(JSON.stringify(data)).toString("base64")}'</script>
       </head>
       <body>
+        <script async src="build/bundle.js"></script>
         <div id="root">${html}</div>
       </body>
     </html>
   `;
 
 const handleRender = async (req, res) => {
-  console.log(`request [${new Date().getTime()}] -> `);
-  const { pageName, ...rest } = headerConfig;
+    console.log(`request [${new Date().getTime()}] -> `);
+    const { pageName, ...rest } = headerConfig;
 
-  const resultData = await readJson();
-  const detail = await readFile(INFO_MARKDOWN, "utf-8");
+    const resultData = await readJson();
+    const detail = await readFile(INFO_MARKDOWN, "utf-8");
 
-  const cache = createEmotionCache();
-  const { extractCriticalToChunks, constructStyleTagsFromChunks } =
-    createEmotionServer(cache);
+    const cache = createEmotionCache();
+    const { extractCriticalToChunks, constructStyleTagsFromChunks } =
+        createEmotionServer(cache);
 
-  const html = ReactDOMServer.renderToString(
-    <CacheProvider value={cache}>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <App header={rest} detail={detail} schemas={tableSchemas} data={resultData} />
-      </ThemeProvider>
-    </CacheProvider>,
-  );
+    const packed = { header: rest, detail, schemas: tableSchemas, data: resultData };
+    const html = ReactDOMServer.renderToString(
+        <CacheProvider value={cache}>
+            <ThemeProvider theme={theme}>
+                <CssBaseline />
+                <App {...packed} />
+            </ThemeProvider>
+        </CacheProvider>,
+    );
 
-  const emotionChunks = extractCriticalToChunks(html);
-  const emotionCss = constructStyleTagsFromChunks(emotionChunks);
+    const emotionChunks = extractCriticalToChunks(html);
+    const emotionCss = constructStyleTagsFromChunks(emotionChunks);
 
-  res.send(renderFull(pageName, html, emotionCss));
-  console.log(`   send [${new Date().getTime()}] <- `);
+    res.send(renderFull(pageName, html, emotionCss, packed));
+    console.log(`   send [${new Date().getTime()}] <- `);
 };
 
 const app = express();

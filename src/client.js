@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+import { hydrateRoot } from 'react-dom/client';
 import { ThemeProvider } from '@mui/material/styles';
 import { CssBaseline } from "@mui/material";
 import { CacheProvider } from '@emotion/react';
@@ -15,10 +15,11 @@ const Main = () => (
   <CacheProvider value={cache}>
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <App />
+      <App {...JSON.parse(window.atob(window.__my_little_pony__))} />
     </ThemeProvider>
   </CacheProvider>
 );
 
-ReactDOM.hydrate(<Main />, document)
+hydrateRoot(document.getElementById("root"), <Main />);
 
+console.log("Hydrate Enabled");
