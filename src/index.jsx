@@ -22,7 +22,6 @@ const data = [
     { "name": "Codex + DB schema", "creator": "OpenAI", "time": "2021/10/11", "size": "175B", "params": "0", "dev_acc": "10.65", "test_acc": "TBD" },
     { "name": "T5-3B", "creator": "Google", "time": "2020/05/22", "repo": "https://www.google.com/", "size": "3B", "params": "3B", "dev_acc": "5.45", "test_acc": "TBD" },
     { "name": "T5-Large", "creator": "Google", "time": "2020/05/10", "repo": "https://www.baidu.com/", "size": "800M", "params": "800M", "dev_acc": "3.72", "test_acc": "TBD" }
-
 ];
 
 

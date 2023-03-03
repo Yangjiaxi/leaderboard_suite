@@ -12,6 +12,7 @@
     "@emotion/react": "latest",
     "@emotion/server": "latest",
     "@emotion/styled": "latest",
+    "@mui/icons-material": "^5.11.11",
     "@mui/material": "^5.11.10",
     "@node-loader/babel": "^2.0.1",
     "babel-loader": "latest",

@@ -3,16 +3,19 @@ class Cell {
         this.keyName = keyName;
         this.config = {
             type: opt.type,
-            fontFamily: opt.fontFamily,
+            isBold: false,
+            isItalic: false,
+            isMono: false,
             ...opt
         };
     }
 
-    static plain(keyName) { return new Cell(keyName, { type: "plain", fontFamily: "plain" }); }
-    static bold(keyName) { return new Cell(keyName, { type: "plain", fontFamily: "bold" }); }
-    static italic(keyName) { return new Cell(keyName, { type: "plain", fontFamily: "italic" }); }
-    static badge(keyName) { return new Cell(keyName, { type: "badge", fontFamily: "plain" }); }
-    static link(keyName) { return new Cell(keyName, { type: "link", fontFamily: "plain" }); }
+    static plain(keyName) { return new Cell(keyName, { type: "plain" }); }
+    static bold(keyName) { return new Cell(keyName, { type: "plain", isBold: true }); }
+    static italic(keyName) { return new Cell(keyName, { type: "plain", isItalic: true }); }
+    static mono(keyName) { return new Cell(keyName, { type: "plain", isMono: true }); }
+    static badge(keyName) { return new Cell(keyName, { type: "badge" }); }
+    static link(keyName) { return new Cell(keyName, { type: "link" }); }
 
     static make(keyName, opt) { return new Cell(keyName, opt); }
 

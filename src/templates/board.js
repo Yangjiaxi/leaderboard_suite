@@ -8,10 +8,10 @@ const table = new TableConstructor();
 table
     .cell("Model").cell("Code").cell("Size").cell("Tunable Params").cell("Dev (%)").cell("Test (%)")
     .header_ok()
-    .multilineResult([Cell.plain("name"), Cell.italic("creator"), Cell.badge("time")])
+    .multilineResult([Cell.bold("name"), Cell.italic("creator"), Cell.badge("time")])
     .result(Cell.link("repo"))
-    .result(Cell.plain("size"))
-    .result(Cell.plain("params"))
+    .result(Cell.mono("size"))
+    .result(Cell.mono("params"))
     .result(Cell.plain("dev_acc"))
     .result(Cell.plain("test_acc"))
     .sortBy("dev_acc");
