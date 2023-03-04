@@ -1,21 +1,25 @@
-import React, { createRef, forwardRef, memo, useRef, useState } from "react";
+import React, { memo, useRef, useState } from "react";
 
-import { Box, Container, Fab, Fade, SpeedDial, SpeedDialAction, SpeedDialIcon, useMediaQuery } from "@mui/material";
+import {
+    Box, Container, Fade, SpeedDial, SpeedDialAction, useMediaQuery,
+} from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
+import styled from "@emotion/styled";
+import { useTheme } from "@emotion/react";
+import { DatasetOutlined, SwitchAccessShortcutAddOutlined, VerticalAlignTopOutlined } from "@mui/icons-material";
 import Info from "./Info";
 import Header from "./Header";
 import Board from "./Board";
-import styled from "@emotion/styled";
-import { useTheme } from "@emotion/react";
 import Footer from "./Footer";
-import { DatasetOutlined, FileCopyOutlined, SwitchAccessShortcutAddOutlined, VerticalAlignTopOutlined } from "@mui/icons-material";
 
 const BackgroundBox = styled(Box)(() => {
     const { palette: { backgroundColor } } = useTheme();
-    return { backgroundColor: backgroundColor, minHeight: "100vh" };
+    return { backgroundColor, minHeight: "100vh" };
 });
 
-const MainFrame = memo(({ header, detail, schemas, data }) => {
+const MainFrame = memo(({
+    header, detail, schemas, data,
+}) => {
     const { title, titleCaption } = header;
 
     const { spacing, breakpoints } = useTheme();
@@ -31,7 +35,7 @@ const MainFrame = memo(({ header, detail, schemas, data }) => {
     };
 
     return (
-        <BackgroundBox display="flex" flexDirection="column" >
+        <BackgroundBox display="flex" flexDirection="column">
             <div ref={topRef} />
             <Header title={title} titleCaption={titleCaption} />
             <Container maxWidth="xl" sx={{ flex: 1, p: 1 }}>
@@ -60,7 +64,7 @@ const MainFrame = memo(({ header, detail, schemas, data }) => {
                     <SpeedDialAction icon={<VerticalAlignTopOutlined />} tooltipTitle="Top" tooltipOpen onClick={scrollTo(topRef)} />
                 </SpeedDial>
             </Fade>
-        </BackgroundBox >
+        </BackgroundBox>
     );
 });
 

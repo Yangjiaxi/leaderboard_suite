@@ -7,14 +7,9 @@ const pageConfig = {
 };
 
 const Anchor = memo(({ to, children }) => (
-    <Link
-        href={to}
-        target='_blank'
-        rel='noopener noreferrer'
-    >
+    <Link href={to} target="_blank" rel="noopener noreferrer">
         {children}
     </Link>
 ));
-
 
 export { Anchor, pageConfig };

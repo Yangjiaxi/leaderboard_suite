@@ -6,16 +6,22 @@ class Cell {
             isBold: false,
             isItalic: false,
             isMono: false,
-            ...opt
+            ...opt,
         };
     }
 
     static plain(keyName) { return new Cell(keyName, { type: "plain" }); }
+
     static bold(keyName) { return new Cell(keyName, { type: "plain", isBold: true }); }
+
     static italic(keyName) { return new Cell(keyName, { type: "plain", isItalic: true }); }
+
     static mono(keyName) { return new Cell(keyName, { type: "plain", isMono: true }); }
+
     static badge(keyName) { return new Cell(keyName, { type: "badge" }); }
+
     static link(keyName) { return new Cell(keyName, { type: "link" }); }
+
     static make(keyName, opt) { return new Cell(keyName, opt); }
 }
 
@@ -103,6 +109,5 @@ class DataSchemeConfig {
         this.schema[key] = text;
     }
 }
-
 
 export { TableConstructor, DataSchemeConfig, Cell };

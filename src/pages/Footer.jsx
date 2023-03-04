@@ -14,12 +14,10 @@ const FooterContainer = styled(Box)(() => {
     };
 });
 
-const Footer = memo(() => {
-    return (
-        <FooterContainer display="flex" flexDirection="column" justifyContent="center">
-            <Typography align="center" fontWeight="bold" color="primary">Designed with 🔥 and ❤️ by LLMind.</Typography>
-        </FooterContainer>
-    );
-});
+const Footer = memo(() => (
+    <FooterContainer display="flex" flexDirection="column" justifyContent="center">
+        <Typography align="center" fontWeight="bold" color="primary">Designed with 💪 and ❤️ by LLMind.</Typography>
+    </FooterContainer>
+));
 
 export default Footer;

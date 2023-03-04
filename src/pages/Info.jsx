@@ -1,15 +1,11 @@
 import { useTheme } from "@emotion/react";
 import styled from "@emotion/styled";
-import { Box, Button, List, ListItem, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
+import {
+    Box, Button, List, ListItem, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography,
+} from "@mui/material";
 import React, { memo } from "react";
-import ReactMarkdown from 'react-markdown';
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import remarkGfm from 'remark-gfm';
-
-// const remarkMath = require("remark-math");
-// const rehypeMathjax = require("rehype-mathjax");
-// import remarkMath from 'remark-math';
-// import rehypeMathjax from "rehype-mathjax";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 import { Anchor } from "./Utils";
 
@@ -21,17 +17,22 @@ const InfoContainer = styled(Paper)(() => {
     };
 });
 
-// const oneColumnSizeMapper = { h1: "h2", h2: "h3", h3: "h4", h4: "h5", h5: "h6", h6: "h6" };
-// const twoColumnSizeMapper = { h1: "h3", h2: "h4", h3: "h5", h4: "h6", h5: "h6", h6: "h6" };
-const headerSizeMapper = { h1: "h3", h2: "h4", h3: "h5", h4: "h6", h5: "h6", h6: "h6" };
-
-const headerRendererFn = (variant) => ({ children }) => {
+const headerSizeMapper = {
+    h1: "h3", h2: "h4", h3: "h5", h4: "h6", h5: "h6", h6: "h6",
+};
+const headerRendererFn = (variant) => function ({ children }) {
     return <Typography fontWeight="bold" variant={headerSizeMapper[variant]} marginTop="0.5em">{children}</Typography>;
 };
-
-const olRenderer = ({ children }) => (<List >{children}</List>);
+const olRenderer = ({ children }) => (<List>{children}</List>);
 const ulRenderer = ({ children }) => (<List>{children}</List>);
-const liRenderer = ({ children, ordered, index }) => <ListItem disablePadding><Typography>{ordered ? `${index + 1}. ` : ""}{children}</Typography></ListItem>;
+const liRenderer = ({ children, ordered, index }) => (
+    <ListItem disablePadding>
+        <Typography>
+            {ordered ? `${index + 1}. ` : ""}
+            {children}
+        </Typography>
+    </ListItem>
+);
 const imgRenderer = ({ src, alt }) => <img src={src} alt={alt} style={{ maxWidth: "100%" }} />;
 const paragraphRenderer = ({ children }) => (<Typography component="span" display="block">{children}</Typography>);
 
@@ -44,41 +45,52 @@ const aRenderer = ({ children, href }) => {
         return (
             <Box display="flex" direction="row" justifyContent="center" alignItems="center">
                 <Button
-                    color="primary" variant="contained"
+                    color="primary"
+                    variant="contained"
                     href={href}
-                    target='_blank' rel='noopener noreferrer'
-                    style={{ minWidth: "75%", margin: "20px" }}>
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ minWidth: "75%", margin: "20px" }}
+                >
                     {text}
                 </Button>
-            </Box >
+            </Box>
         );
     }
 
-    else {
-        return <Anchor to={href}>{children}</Anchor>;
-    }
+    return <Anchor to={href}>{children}</Anchor>;
 };
 
-const StyledCode = styled("code")(() => {
+const StyledInlineCode = styled("code")(() => {
     const { spacing } = useTheme();
     return {
         border: "1px solid #999",
         margin: `0 ${spacing(0.5)}`,
         padding: `2px ${spacing(1)}`,
         borderRadius: "2px",
-        backgroundColor: 'rgba(255,229,100,.2)',
+        backgroundColor: "rgba(255,229,100,.2)",
+    };
+});
+
+const StyledBlockCode = styled("pre")(() => {
+    const { spacing } = useTheme();
+    return {
+        fontSize: "0.75em",
+        overflow: "auto",
+        border: "1px solid #999",
+        margin: `0 ${spacing(0.5)}`,
+        padding: spacing(1),
+        borderRadius: "2px",
+        backgroundColor: "rgba(255,229,100,.2)",
     };
 });
 
 const codeRenderer = ({ inline, children, className }) => {
-    const match = /language-(\w+)/.exec(className || '');
-
     if (inline) {
-        return <StyledCode>{children}</StyledCode>;
+        return <StyledInlineCode>{children}</StyledInlineCode>;
     }
-    else {
-        return <SyntaxHighlighter children={String(children).replace(/\n$/, '')} language={match[1]} customStyle={{ fontSize: "0.75em" }} />;
-    }
+
+    return <StyledBlockCode children={String(children).replace(/\n$/, "")} />;
 };
 
 const TableCellNoWrap = styled(TableCell)({ whiteSpace: "nowrap" });
@@ -89,33 +101,30 @@ const tableRowRenderer = ({ children }) => <TableRow>{children}</TableRow>;
 const tableCellRenderer = ({ children }) => <TableCellNoWrap>{children}</TableCellNoWrap>;
 const tableHeaderCellRenderer = ({ children }) => <TableCellNoWrap>{children}</TableCellNoWrap>;
 
-
-const Info = memo(({ detail }) => {
-
-    // const detail = "## Hello\n\n1. **Title**: content";
-    return (
-        <InfoContainer elevation={2}>
-            <ReactMarkdown
-                children={detail}
-                components={{
-                    ...Object.fromEntries(["h1", "h2", "h3", "h4", "h5", "h6"].map(x => [x, headerRendererFn(x)])),
-                    p: paragraphRenderer,
-                    li: liRenderer, ul: ulRenderer, ol: olRenderer,
-                    a: aRenderer,
-                    img: imgRenderer,
-                    code: codeRenderer,
-                    table: tableRenderer,
-                    thead: tableHeadRenderer,
-                    tbody: tableBodyRenderer,
-                    tr: tableRowRenderer,
-                    td: tableCellRenderer,
-                    th: tableHeaderCellRenderer,
-                }}
-                className="markdown-container"
-                remarkPlugins={[remarkGfm]}
-            />
-        </InfoContainer>
-    );
-});
+const Info = memo(({ detail }) => (
+    <InfoContainer elevation={2}>
+        <ReactMarkdown
+            children={detail}
+            components={{
+                ...Object.fromEntries(["h1", "h2", "h3", "h4", "h5", "h6"].map((x) => [x, headerRendererFn(x)])),
+                p: paragraphRenderer,
+                li: liRenderer,
+                ul: ulRenderer,
+                ol: olRenderer,
+                a: aRenderer,
+                img: imgRenderer,
+                code: codeRenderer,
+                table: tableRenderer,
+                thead: tableHeadRenderer,
+                tbody: tableBodyRenderer,
+                tr: tableRowRenderer,
+                td: tableCellRenderer,
+                th: tableHeaderCellRenderer,
+            }}
+            className="markdown-container"
+            remarkPlugins={[remarkGfm]}
+        />
+    </InfoContainer>
+));
 
 export default Info;

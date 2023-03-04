@@ -1,4 +1,4 @@
-import { TableConstructor, Cell } from "./makeBoard";
+import { TableConstructor, Cell } from "../server/makeBoard";
 
 const tableEX = new TableConstructor();
 
@@ -8,7 +8,6 @@ tableEX
     .cell("Model").cell("Code").cell("Size").cell("Tunable Params").cell("Dev (%)").cell("Test (%)")
     .header_ok()
     .indexWithResult(Cell.badge("time"))
-    // .indexWithResult(Cell.make("time", { type: "badge", isMono: true }))
     .multilineResult([Cell.bold("name"), Cell.italic("creator")])
     .result(Cell.link("repo"))
     .result(Cell.mono("size"))
@@ -32,7 +31,6 @@ tableES
     .result(Cell.plain("dev_acc"))
     .result(Cell.plain("test_acc"))
     .sortBy("dev_acc");
-
 
 const allTables = [tableEX, tableES];
 
