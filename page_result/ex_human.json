@@ -4,5 +4,6 @@
     "creator": "Data Engineers + DB Students",
     "dev_acc": "87.6",
     "test_acc": "85.2",
-    "__skip_index": true
+    "__skip_index": true,
+    "__bg_color": "#c3e6cb"
 }

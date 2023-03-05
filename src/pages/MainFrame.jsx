@@ -20,7 +20,7 @@ const BackgroundBox = styled(Box)(() => {
 const MainFrame = memo(({
     header, detail, schemas, data,
 }) => {
-    const { title, titleCaption } = header;
+    const { title, titleCaption, logoList } = header;
 
     const { spacing, breakpoints } = useTheme();
     const isOneColumn = useMediaQuery(breakpoints.down("md"));
@@ -37,7 +37,7 @@ const MainFrame = memo(({
     return (
         <BackgroundBox display="flex" flexDirection="column">
             <div ref={topRef} />
-            <Header title={title} titleCaption={titleCaption} />
+            <Header title={title} titleCaption={titleCaption} logoList={logoList} />
             <Container maxWidth="xl" sx={{ flex: 1, p: 1 }}>
                 <Grid spacing={2} container maxWidth="xl">
                     <Grid xs={12} md={4} item>

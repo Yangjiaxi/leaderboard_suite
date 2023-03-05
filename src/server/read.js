@@ -1,4 +1,5 @@
 import { readFile, readdir } from "fs/promises";
+import { readFileSync } from "fs";
 import path from "path";
 
 const readTextFile = async (file) => readFile(file, "utf8");
@@ -12,4 +13,8 @@ const readAllJsonFromFolder = async (folder) => {
     return allContent;
 };
 
-export { readAllJsonFromFolder, readTextFile, readJson };
+const readSync = (file) => readFileSync(file);
+
+export {
+    readAllJsonFromFolder, readTextFile, readJson, readSync,
+};

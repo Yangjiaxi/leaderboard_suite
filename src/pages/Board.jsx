@@ -45,7 +45,7 @@ const renderFontDecorator = (text, config) => {
     return content;
 };
 
-const renderCellContent = (cellConfig, cellData) => {
+const renderCellContent = (cellData, cellConfig) => {
     const textWithDecorator = renderFontDecorator(cellData, cellConfig);
     if (cellConfig.type === "plain") return <Typography>{textWithDecorator}</Typography>;
     if (cellConfig.type === "badge") return <Chip label={textWithDecorator} variant="filled" size="small" />;
@@ -54,22 +54,27 @@ const renderCellContent = (cellConfig, cellData) => {
     return <> cellData</>;
 };
 
-const renderDataCell = (cellSchema, fullDataDict, index) => {
+const renderDataCell = (fullDataDict, cellSchema, index) => {
     const cellContent = cellSchema
         .filter(({ keyName }) => fullDataDict.hasOwnProperty(keyName))
-        .map(({ keyName, config }) => renderCellContent(config, fullDataDict[keyName]));
+        .map(({ keyName, config }) => renderCellContent(fullDataDict[keyName], config));
     return <TableCellNoWrap key={index} align="center">{cellContent.map((e, idx) => <Fragment key={idx}>{e}</Fragment>)}</TableCellNoWrap>;
 };
 
-const makeDataRow = (cellSchemas, line, index) => (
-    <TableRow key={index}>
-        {cellSchemas.map((cellSchema, cellIndex) => renderDataCell(cellSchema, line, cellIndex))}
-    </TableRow>
-);
+const makeDataRow = (dataWithSchema, index) => {
+    const [line, cellSchemas] = dataWithSchema;
+    let rowStyle = {};
+    if ("__bg_color" in line) rowStyle = { backgroundColor: line.__bg_color };
+    return (
+        <TableRow key={index} style={rowStyle}>
+            {cellSchemas.map((cellSchema, cellIndex) => renderDataCell(line, cellSchema, cellIndex))}
+        </TableRow>
+    );
+};
 
-const makeData = (cellSchemas, data) => (
+const makeData = (dataWithSchemas) => (
     <TableBody>
-        {data.map((line, index) => makeDataRow(cellSchemas, line, index))}
+        {dataWithSchemas.map((dataWithSchema, index) => makeDataRow(dataWithSchema, index))}
     </TableBody>
 );
 
@@ -103,18 +108,38 @@ const makeBoard = (schema, data, index) => {
     const matchedData = data.filter(({ scope }) => scope === scopeName);
     const sorted = [...matchedData].sort((a, b) => b[sortKey] - a[sortKey]);
 
-    const dataWithIdx = [];
-    let counter = 1;
+    // const dataWithIdx = [];
+    const dataWithSchemas = [];
+
+    let counter = 0;
+    let prevValue = null;
     for (const e of sorted) {
         if ("__skip_index" in e && e.__skip_index) {
-            dataWithIdx.push(e);
+            dataWithSchemas.push([e, dataSchema]);
+            // dataWithIdx.push(e);
         } else {
-            dataWithIdx.push({ ...e, __index: counter });
-            counter += 1;
+            if (!prevValue || e[sortKey] !== prevValue) counter += 1;
+            if (counter === 1) {
+                const leaderSchema = [];
+                for (const cellSchema of dataSchema) {
+                    const newSchema = [];
+                    for (const lineSchema of cellSchema) {
+                        if (lineSchema.keyName === sortKey) newSchema.push({ ...lineSchema, config: { ...lineSchema.config, isBold: true } });
+                        else newSchema.push(lineSchema);
+                    }
+                    leaderSchema.push(newSchema);
+                }
+                dataWithSchemas.push([{ ...e, __index: counter }, leaderSchema]);
+            } else {
+                dataWithSchemas.push([{ ...e, __index: counter }, dataSchema]);
+            }
+            // dataWithIdx.push({ ...e, __index: counter });
+            prevValue = e[sortKey];
         }
     }
 
-    const tableBody = makeData(dataSchema, dataWithIdx);
+    // const tableBody = makeData(dataSchema, dataWithIdx);
+    const tableBody = makeData(dataWithSchemas);
 
     return (
         <BoardPaper key={index} elevation={2}>

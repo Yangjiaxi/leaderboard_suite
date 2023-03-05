@@ -1,6 +1,3 @@
-// import createTheme from '@mui/material/styles/createTheme.js';
-// import responsiveFontSizes from "@mui/material/styles/responsiveFontSizes.js";
-
 import { createTheme, responsiveFontSizes } from "@mui/material";
 
 const theme = createTheme({

@@ -2,7 +2,7 @@ class Cell {
     constructor(keyName, opt) {
         this.keyName = keyName;
         this.config = {
-            type: opt.type,
+            type: "plain",
             isBold: false,
             isItalic: false,
             isMono: false,
@@ -10,17 +10,37 @@ class Cell {
         };
     }
 
-    static plain(keyName) { return new Cell(keyName, { type: "plain" }); }
+    static key(keyName) { return new Cell(keyName); }
 
-    static bold(keyName) { return new Cell(keyName, { type: "plain", isBold: true }); }
+    plain() {
+        this.config = { ...this.config, type: "plain" };
+        return this;
+    }
 
-    static italic(keyName) { return new Cell(keyName, { type: "plain", isItalic: true }); }
+    bold() {
+        this.config = { ...this.config, isBold: true };
+        return this;
+    }
 
-    static mono(keyName) { return new Cell(keyName, { type: "plain", isMono: true }); }
+    italic() {
+        this.config = { ...this.config, isItalic: true };
+        return this;
+    }
 
-    static badge(keyName) { return new Cell(keyName, { type: "badge" }); }
+    mono() {
+        this.config = { ...this.config, isMono: true };
+        return this;
+    }
 
-    static link(keyName) { return new Cell(keyName, { type: "link" }); }
+    badge() {
+        this.config = { ...this.config, type: "badge" };
+        return this;
+    }
+
+    link() {
+        this.config = { ...this.config, type: "link" };
+        return this;
+    }
 
     static make(keyName, opt) { return new Cell(keyName, opt); }
 }
@@ -35,7 +55,7 @@ class TableConstructor {
 
         this.contentSchema = [];
         this.sortKey = "";
-        this.indexSchema = [Cell.plain("__index")];
+        this.indexSchema = [Cell.key("__index")];
     }
 
     scope(scopeName) {
@@ -76,12 +96,12 @@ class TableConstructor {
     }
 
     indexWithResult(key) {
-        this.indexSchema = [Cell.plain("__index"), key];
+        this.indexSchema = [Cell.key("__index"), key];
         return this;
     }
 
     indexWithMultilineResult(keys) {
-        this.indexSchema = [Cell.plain("__index"), ...keys];
+        this.indexSchema = [Cell.key("__index"), ...keys];
         return this;
     }
 

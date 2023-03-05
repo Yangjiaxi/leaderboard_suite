@@ -7,7 +7,7 @@ import React, { memo } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
-import { Anchor } from "./Utils";
+import { Anchor, convertToBuildPath } from "./Utils";
 
 const InfoContainer = styled(Paper)(() => {
     const { spacing } = useTheme();
@@ -20,9 +20,7 @@ const InfoContainer = styled(Paper)(() => {
 const headerSizeMapper = {
     h1: "h3", h2: "h4", h3: "h5", h4: "h6", h5: "h6", h6: "h6",
 };
-const headerRendererFn = (variant) => function ({ children }) {
-    return <Typography fontWeight="bold" variant={headerSizeMapper[variant]} marginTop="0.5em">{children}</Typography>;
-};
+const headerRendererFn = (variant) => ({ children }) => <Typography fontWeight="bold" variant={headerSizeMapper[variant]} marginTop="0.5em">{children}</Typography>;
 const olRenderer = ({ children }) => (<List>{children}</List>);
 const ulRenderer = ({ children }) => (<List>{children}</List>);
 const liRenderer = ({ children, ordered, index }) => (
@@ -33,7 +31,7 @@ const liRenderer = ({ children, ordered, index }) => (
         </Typography>
     </ListItem>
 );
-const imgRenderer = ({ src, alt }) => <img src={src} alt={alt} style={{ maxWidth: "100%" }} />;
+const imgRenderer = ({ src, alt }) => <img src={convertToBuildPath("/build", src)} alt={alt} style={{ maxWidth: "100%" }} />;
 const paragraphRenderer = ({ children }) => (<Typography component="span" display="block">{children}</Typography>);
 
 const aRenderer = ({ children, href }) => {

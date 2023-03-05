@@ -2,6 +2,7 @@ const path = require("path");
 
 const CompressionPlugin = require("compression-webpack-plugin");
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
+const CopyPlugin = require("copy-webpack-plugin");
 
 module.exports = {
     entry: "./src/client.js",
@@ -31,6 +32,14 @@ module.exports = {
     },
     plugins: [
         new CompressionPlugin(),
+        new CopyPlugin({
+            patterns: [
+                {
+                    from: "./templates/images",
+                    to: path.join(path.resolve(__dirname, "build"), "images"),
+                },
+            ],
+        }),
     ],
     optimization: {
         minimizer: [new UglifyJsPlugin()],
